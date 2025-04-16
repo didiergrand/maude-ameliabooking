@@ -1,0 +1,30 @@
+# Configuration files
+*.json
+!composer.json
+!package.json
+
+# Environment files
+.env
+.env.*
+
+# IDE files
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Dependencies
+/vendor/
+/node_modules/
+
+# Build files
+/build/
+/dist/
+
+# Cache
+*.cache
+
+# Local development
+.DS_Store
+Thumbs.db 
