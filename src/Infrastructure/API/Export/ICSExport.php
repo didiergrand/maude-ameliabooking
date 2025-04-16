@@ -57,6 +57,13 @@ class ICSExport
                         $customerName = '';
                         $customerPhone = '';
                         $customerEmail = '';
+                        
+                        // Récupération de l'email depuis customer
+                        if (isset($appointmentData['bookings'][0]['customer']['email'])) {
+                            $customerEmail = $appointmentData['bookings'][0]['customer']['email'];
+                        }
+                        
+                        // Récupération du nom et téléphone depuis info (prioritaire)
                         if (isset($appointmentData['bookings'][0]['info'])) {
                             $info = json_decode($appointmentData['bookings'][0]['info'], true);
                             if (isset($info['firstName']) && isset($info['lastName'])) {
@@ -65,9 +72,16 @@ class ICSExport
                             if (isset($info['phone'])) {
                                 $customerPhone = $info['phone'];
                             }
-                            if (isset($info['email'])) {
-                                $customerEmail = $info['email'];
-                            }
+                        }
+                        
+                        // Si le nom n'est pas dans info, on le cherche dans customer
+                        if (empty($customerName) && isset($appointmentData['bookings'][0]['customer']['firstName']) && isset($appointmentData['bookings'][0]['customer']['lastName'])) {
+                            $customerName = $appointmentData['bookings'][0]['customer']['firstName'] . ' ' . $appointmentData['bookings'][0]['customer']['lastName'];
+                        }
+                        
+                        // Si le téléphone n'est pas dans info, on le cherche dans customer
+                        if (empty($customerPhone) && isset($appointmentData['bookings'][0]['customer']['phone'])) {
+                            $customerPhone = $appointmentData['bookings'][0]['customer']['phone'];
                         }
                         
                         $icsContent .= "BEGIN:VEVENT\r\n";
